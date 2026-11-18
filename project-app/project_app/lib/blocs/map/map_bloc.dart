@@ -22,8 +22,10 @@ part 'map_state.dart';
 /// - Mostrar y ocultar rutas.
 /// - Administrar eventos relacionados con el mapa.
 class MapBloc extends Bloc<MapEvent, MapState> {
+
   /// Controlador para manejar el mapa de Google Maps.
   GoogleMapController? _mapController;
+
 
   /// Bloc de ubicación para obtener datos de la posición del usuario.
   final LocationBloc locationBloc;
@@ -47,7 +49,9 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     on<OnDisplayPolylinesEvent>((event, emit) {
       final currentPolylines = Map<String, Polyline>.from(event.polylines);
 
+
       // Si la ruta del usuario no debe mostrarse, eliminar 'myRoute'
+
       if (!state.showUserRoute && currentPolylines.containsKey('myRoute')) {
         log.i(
             'Eliminando polilínea myRoute porque showUserRoute está desactivado.');
@@ -75,12 +79,14 @@ class MapBloc extends Bloc<MapEvent, MapState> {
       if (!state.isFollowingUser) return;
       if (locationState.lastKnownLocation == null) return;
 
+
       // Mueve la cámara al usuario si se está siguiendo.
       moveCamera(locationState.lastKnownLocation!);
     });
   }
 
   /// Inicializa el mapa con el controlador y el contexto.
+
   Future<void> _onInitMap(
       OnMapInitializedEvent event, Emitter<MapState> emit) async {
     _mapController = event.mapController;
@@ -121,7 +127,9 @@ class MapBloc extends Bloc<MapEvent, MapState> {
 
     if (!state.showUserRoute) {
       log.i('showUserRoute está desactivado. No se agrega la polilínea.');
+
       return; // Salir si la ruta del usuario no debe mostrarse.
+
     }
 
     final myRoute = Polyline(
@@ -145,7 +153,9 @@ class MapBloc extends Bloc<MapEvent, MapState> {
   Future<void> drawEcoCityTour(EcoCityTour tour) async {
     log.i('Dibujando EcoCityTour en el mapa: ${tour.name}');
 
+
     // Crear la polilínea del tour.
+
     final myRoute = Polyline(
       polylineId: const PolylineId('route'),
       color: Colors.teal,
@@ -178,6 +188,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     }
 
     final currentPolylines = Map<String, Polyline>.from(state.polylines);
+
 
     // Añadir la polilínea del tour.
     currentPolylines['route'] = myRoute;
